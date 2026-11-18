@@ -1,0 +1,1210 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CINEFLIX</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #101c30;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+header {
+    background-color: #091426;
+    padding: 18px 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.logo {
+    color: #4da3e8;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+nav {
+    display: flex;
+    gap: 18px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+nav a:hover {
+    color: #4da3e8;
+}
+
+button {
+    cursor: pointer;
+    padding: 9px 14px;
+    border: none;
+    border-radius: 4px;
+    background-color: #2479bd;
+    color: white;
+}
+
+button:hover {
+    background-color: #185b91;
+}
+
+.topo {
+    background-color: #1b3554;
+    margin: 25px 5%;
+    padding: 25px;
+    border-radius: 5px;
+}
+
+.topo h1 {
+    font-size: 25px;
+    margin-bottom: 10px;
+}
+
+.topo p {
+    color: #d0dce9;
+    margin-bottom: 15px;
+}
+
+main {
+    padding: 10px 5% 35px;
+}
+
+.filtros {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0 30px;
+    flex-wrap: wrap;
+}
+
+input, select {
+    padding: 11px;
+    border: 1px solid #52647b;
+    border-radius: 4px;
+    background-color: #192b43;
+    color: white;
+}
+
+input {
+    flex: 1;
+    min-width: 180px;
+}
+
+select {
+    min-width: 145px;
+}
+
+h2 {
+    font-size: 20px;
+    margin: 28px 0 15px;
+}
+
+.lista {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+    gap: 18px;
+}
+
+.card {
+    background-color: #192b43;
+    border-radius: 5px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.card:hover {
+    background-color: #243c59;
+    transform: translateY(-4px);
+}
+
+.poster {
+    height: 220px;
+    background-color: #304762;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 10px;
+    color: white;
+}
+
+.poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.info {
+    padding: 10px;
+}
+
+.info h3 {
+    font-size: 14px;
+    margin-bottom: 7px;
+}
+
+.info p {
+    color: #c1ccda;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+#mensagem {
+    display: none;
+    margin: 20px 0;
+    color: #c1ccda;
+}
+
+footer {
+    background-color: #091426;
+    padding: 20px;
+    text-align: center;
+    color: #b5c4d6;
+    font-size: 13px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0,0,0,0.8);
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    z-index: 10;
+}
+
+.modal-conteudo {
+    background-color: #192b43;
+    padding: 25px;
+    border-radius: 5px;
+    width: 100%;
+    max-width: 380px;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-conteudo h2 {
+    margin-top: 0;
+}
+
+.modal-conteudo p {
+    margin: 12px 0;
+    line-height: 1.5;
+    color: #d0dce9;
+}
+
+.modal-conteudo input {
+    width: 100%;
+    margin: 8px 0;
+}
+
+.fechar {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    background: none;
+    font-size: 22px;
+}
+
+#imagemDetalhe {
+    width: 110px;
+    height: 155px;
+    object-fit: cover;
+    margin-top: 10px;
+}
+
+.botao-adicionar {
+    margin: 10px 0 18px;
+    background-color: #16845b;
+}
+
+.botao-adicionar:hover {
+    background-color: #106844;
+}
+
+.modal-conteudo textarea {
+    width: 100%;
+    min-height: 75px;
+    margin: 8px 0;
+    padding: 11px;
+    border: 1px solid #52647b;
+    border-radius: 4px;
+    background-color: #192b43;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+@media(max-width: 600px) {
+    header {
+        justify-content: center;
+    }
+
+    nav {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .lista {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">CINEFLIX</div>
+
+    <nav>
+        <a href="#inicio">Início</a>
+        <a href="#catalogo">Filmes e séries</a>
+        <a href="#sobre">Sobre</a>
+    </nav>
+
+    <div>
+        <button onclick="abrir('info')">Informações</button>
+        <button onclick="abrir('login')">Entrar</button>
+    </div>
+</header>
+
+<section class="topo" id="inicio">
+    <h1>Bem-vindo à CINEFLIX</h1>
+    <p>Confira nosso catálogo de filmes e séries.</p>
+    <button onclick="document.getElementById('catalogo').scrollIntoView()">
+        Ver catálogo
+    </button>
+</section>
+
+<main id="catalogo">
+
+    <h2>Filmes e séries</h2>
+
+    <button class="botao-adicionar" onclick="abrir('adicionar')">
+        + Adicionar filme ou série
+    </button>
+
+    <div class="filtros">
+        <input
+            type="text"
+            id="pesquisa"
+            placeholder="Pesquisar título..."
+            oninput="filtrar()"
+        >
+
+        <select id="tipo" onchange="filtrar()">
+            <option value="">Todos</option>
+            <option value="Filme">Filmes</option>
+            <option value="Série">Séries</option>
+        </select>
+
+        <select id="genero" onchange="filtrar()">
+            <option value="">Todos os gêneros</option>
+            <option value="Romance">Romance</option>
+            <option value="Ação">Ação</option>
+            <option value="Suspense">Suspense</option>
+            <option value="Terror">Terror</option>
+            <option value="Comédia">Comédia</option>
+            <option value="Drama">Drama</option>
+            <option value="Animação">Animação</option>
+            <option value="Ficção científica">Ficção científica</option>
+            <option value="Aventura">Aventura</option>
+        </select>
+    </div>
+
+    <div class="lista" id="listaFilmes"></div>
+
+    <p id="mensagem">Nenhum resultado encontrado.</p>
+
+</main>
+
+<footer id="sobre">
+    <p>CINEFLIX - Projeto escolar de filmes e séries.</p>
+</footer>
+
+<!-- Adicionar filme ou série -->
+
+<div class="modal" id="adicionar">
+    <div class="modal-conteudo">
+        <button class="fechar" onclick="fechar('adicionar')">×</button>
+        <h2>Adicionar ao catálogo</h2>
+
+        <input type="text" id="novoTitulo" placeholder="Nome do filme ou série">
+
+        <select id="novoTipo" style="width:100%; margin:8px 0;">
+            <option value="Filme">Filme</option>
+            <option value="Série">Série</option>
+        </select>
+
+        <select id="novoGenero" style="width:100%; margin:8px 0;">
+            <option value="Romance">Romance</option>
+            <option value="Ação">Ação</option>
+            <option value="Suspense">Suspense</option>
+            <option value="Terror">Terror</option>
+            <option value="Comédia">Comédia</option>
+            <option value="Drama">Drama</option>
+            <option value="Animação">Animação</option>
+            <option value="Ficção científica">Ficção científica</option>
+            <option value="Aventura">Aventura</option>
+        </select>
+
+        <input type="number" id="novoAno" placeholder="Ano">
+        <input type="url" id="novaImagem" placeholder="Link da imagem (opcional)">
+
+        <textarea id="novaDescricao" placeholder="Descrição (opcional)"></textarea>
+
+        <button onclick="adicionarFilme()">Adicionar</button>
+        <p id="mensagemAdicionar" aria-live="polite"></p>
+    </div>
+</div>
+
+<!-- Login -->
+
+<div class="modal" id="login">
+    <div class="modal-conteudo">
+        <button class="fechar" onclick="fechar('login')">×</button>
+        <h2>Entrar</h2>
+        <input type="email" id="email" placeholder="E-mail">
+        <input type="password" id="senha" placeholder="Senha">
+        <button onclick="fazerLogin()">Entrar</button>
+        <p id="mensagemLogin"></p>
+    </div>
+</div>
+
+<!-- Informações -->
+
+<div class="modal" id="info">
+    <div class="modal-conteudo">
+        <button class="fechar" onclick="fechar('info')">×</button>
+        <h2>Sobre o site</h2>
+        <p>A CINEFLIX é um projeto escolar criado para organizar e apresentar filmes e séries.</p>
+        <p>O site possui pesquisa, filtros por gênero e informações sobre os títulos.</p>
+    </div>
+</div>
+
+<!-- Detalhes -->
+
+<div class="modal" id="detalhes">
+    <div class="modal-conteudo">
+        <button class="fechar" onclick="fechar('detalhes')">×</button>
+        <h2 id="tituloDetalhe"></h2>
+        <img id="imagemDetalhe" alt="Cartaz do título">
+        <p id="tipoDetalhe"></p>
+        <p id="generoDetalhe"></p>
+        <p id="anoDetalhe"></p>
+        <p id="descricaoDetalhe"></p>
+    </div>
+</div>
+
+<script>
+
+// CATÁLOGO DE FILMES E SÉRIES
+
+const filmes = [
+
+    {
+        titulo: "Para Todos os Garotos que Já Amei",
+        tipo: "Filme",
+        genero: "Romance",
+        ano: 2018,
+        imagem: "https://image.tmdb.org/t/p/w500/hKHZhUbIyUAjcSrqJThFGYIR6kI.jpg",
+        descricao: "Uma jovem tem sua vida mudada quando suas cartas de amor são enviadas."
+    },
+    {
+        titulo: "A Culpa é das Estrelas",
+        tipo: "Filme",
+        genero: "Romance",
+        ano: 2014,
+        imagem: "https://image.tmdb.org/t/p/w500/ep7dF4QR4Mm39LI958V0XbwE0hK.jpg",
+        descricao: "Dois jovens se conhecem e vivem uma história especial."
+    },
+    {
+        titulo: "Como Eu Era Antes de Você",
+        tipo: "Filme",
+        genero: "Romance",
+        ano: 2016,
+        imagem: "https://image.tmdb.org/t/p/w500/Ia3dzj5LnCj1ZBdlVeJrbKJQxG.jpg",
+        descricao: "Uma jovem começa a trabalhar como cuidadora de um homem."
+    },
+    {
+        titulo: "Titanic",
+        tipo: "Filme",
+        genero: "Romance",
+        ano: 1997,
+        imagem: "https://image.tmdb.org/t/p/w500/9xjZS2rlVxm8SFx8kPC3aIGCOYQ.jpg",
+        descricao: "Uma história de amor durante a viagem de um navio."
+    },
+    {
+        titulo: "Vingadores: Ultimato",
+        tipo: "Filme",
+        genero: "Ação",
+        ano: 2019,
+        imagem: "https://image.tmdb.org/t/p/w500/or06FN3Dka5tukK1e9sl16pB3iy.jpg",
+        descricao: "Os heróis se unem para tentar salvar o universo."
+    },
+    {
+        titulo: "Pantera Negra",
+        tipo: "Filme",
+        genero: "Ação",
+        ano: 2018,
+        imagem: "https://image.tmdb.org/t/p/w500/uxzzxijgPIY7slzFvMotPv8wjKA.jpg",
+        descricao: "Um rei precisa proteger seu reino."
+    },
+    {
+        titulo: "Duna",
+        tipo: "Filme",
+        genero: "Ficção científica",
+        ano: 2021,
+        imagem: "https://image.tmdb.org/t/p/w500/d5NXSklXo0qyIYkgV94XAgMIckC.jpg",
+        descricao: "Um jovem enfrenta desafios em um planeta desértico."
+    },
+    {
+        titulo: "Stranger Things",
+        tipo: "Série",
+        genero: "Suspense",
+        ano: 2016,
+        imagem: "https://image.tmdb.org/t/p/w500/x2LSRK2Cm7MZhjluni1msVJ3wDF.jpg",
+        descricao: "Um grupo de amigos encontra acontecimentos misteriosos."
+    },
+    {
+        titulo: "Dark",
+        tipo: "Série",
+        genero: "Suspense",
+        ano: 2017,
+        imagem: "https://image.tmdb.org/t/p/w500/apbrbWs8M9lyOpJYU5WXrpFbk1Z.jpg",
+        descricao: "Desaparecimentos revelam segredos de várias famílias."
+    },
+    {
+        titulo: "A Origem",
+        tipo: "Filme",
+        genero: "Suspense",
+        ano: 2010,
+        imagem: "https://image.tmdb.org/t/p/w500/oYuLEt3zVCKq57qu2F8dT7NIa6f.jpg",
+        descricao: "Uma equipe realiza uma missão envolvendo sonhos."
+    },
+    {
+        titulo: "A Freira",
+        tipo: "Filme",
+        genero: "Terror",
+        ano: 2018,
+        imagem: "https://image.tmdb.org/t/p/w500/sFC1ElvoKGdHJIWRpNB3xWJ9lJA.jpg",
+        descricao: "Uma investigação acontece em um antigo convento."
+    },
+    {
+        titulo: "It: A Coisa",
+        tipo: "Filme",
+        genero: "Terror",
+        ano: 2017,
+        imagem: "https://image.tmdb.org/t/p/w500/9E2y5Q7WlCVNEhP5GiVTjhEhx1o.jpg",
+        descricao: "Um grupo de amigos enfrenta um mistério assustador."
+    },
+    {
+        titulo: "Minha Mãe é uma Peça",
+        tipo: "Filme",
+        genero: "Comédia",
+        ano: 2013,
+        imagem: "https://upload.wikimedia.org/wikipedia/pt/d/da/Minha_M%C3%A3e_%C3%A9_uma_Pe%C3%A7a.jpg?utm_source=pt.wikipedia.org&utm_campaign=index&utm_content=original",
+        descricao: "Dona Hermínia vive situações divertidas com sua família."
+    },
+    {
+        titulo: "Divertida Mente",
+        tipo: "Filme",
+        genero: "Animação",
+        ano: 2015,
+        imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkp8uQQM33hPurryuyMgtyyRHJnOeg1NwJlCVwW_SRIgZNAYaqEPcujdI&s=10",
+        descricao: "As emoções de uma menina tentam ajudá-la a lidar com mudanças."
+    },
+    {
+        titulo: "Viva: A Vida é uma Festa",
+        tipo: "Filme",
+        genero: "Animação",
+        ano: 2017,
+        imagem: "https://image.tmdb.org/t/p/w500/gGEsBPAijhVUFoiNpgZXqRVWJt2.jpg",
+        descricao: "Um menino embarca em uma aventura ligada à música e à família."
+    },
+    {
+        titulo: "The Flash",
+        tipo: "Série",
+        genero: "Ação",
+        ano: 2014,
+        imagem: "https://image.tmdb.org/t/p/w500/lJA2RCMfsWoskqlQhXPSLFQGXEJ.jpg",
+        descricao: "Barry Allen usa sua velocidade para proteger Central City."
+    },
+    {
+        titulo: "The 100",
+        tipo: "Série",
+        genero: "Ficção científica",
+        ano: 2014,
+        imagem: "https://image.tmdb.org/t/p/w500/wcaDIAG1QdXQLRaj4vC1EFdBT2.jpg",
+        descricao: "Jovens retornam à Terra para descobrir se o planeta pode ser habitado."
+    },
+    {
+        titulo: "Anne with an E",
+        tipo: "Série",
+        genero: "Drama",
+        ano: 2017,
+        imagem: "https://image.tmdb.org/t/p/w500/6P6tXhjT5tK3qOXzxF9OMLlG7iz.jpg",
+        descricao: "Anne encontra uma nova família e vive muitas descobertas."
+    },
+    {
+        titulo: "Outer Banks",
+        tipo: "Série",
+        genero: "Aventura",
+        ano: 2020,
+        imagem: "https://image.tmdb.org/t/p/w500/1uKHoFWyYJn060dpIXUCU7Wbc15.jpg",
+        descricao: "Um grupo de amigos procura um tesouro e enfrenta mistérios."
+    },
+    {
+        titulo: "Wandinha",
+        tipo: "Série",
+        genero: "Suspense",
+        ano: 2022,
+        imagem: "https://image.tmdb.org/t/p/w500/9PFonBhy4cQy7Jz20NpMygczOkv.jpg",
+        descricao: "Wandinha investiga acontecimentos misteriosos em sua escola."
+    },
+    {
+        titulo: "Bridgerton",
+        tipo: "Série",
+        genero: "Romance",
+        ano: 2020,
+        imagem: "https://image.tmdb.org/t/p/w500/luoKpgVwi1E5nQsi7W0UuKHu2Rq.jpg",
+        descricao: "A família Bridgerton vive romances e desafios na alta sociedade."
+    },
+    {
+        titulo: "Ginny e Georgia",
+        tipo: "Série",
+        genero: "Drama",
+        ano: 2021,
+        imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRViAsh1OWUmyPveXl-l8pNY_I_eEcjQygEyvURpPYEHQ&s=10",
+        descricao: "Uma mãe e sua filha começam uma nova vida em outra cidade."
+    },
+    {
+        titulo: "The Vampire Diaries",
+        tipo: "Série",
+        genero: "Drama",
+        ano: 2009,
+        imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSI9IPq4GtF7JrAV4A4ZV3YFdbFxpcXv36ZfZ7Cna_PwQ&s",
+        descricao: "Uma jovem conhece dois irmãos vampiros e descobre segredos da cidade."
+    },
+    {
+        titulo: "Riverdale",
+        tipo: "Série",
+        genero: "Suspense",
+        ano: 2017,
+        imagem: "https://image.tmdb.org/t/p/w500/4X7o1ssOEvp4BFLim1AZmPNcYbU.jpg",
+        descricao: "Adolescentes investigam mistérios em sua pequena cidade."
+    },
+    {
+        titulo: "Elite",
+        tipo: "Série",
+        genero: "Drama",
+        ano: 2018,
+        imagem: "https://image.tmdb.org/t/p/w500/3NTAbAiao4JLzFQw6YxP1YZppM8.jpg",
+        descricao: "Alunos de uma escola enfrentam conflitos e segredos."
+    },
+    {
+        titulo: "The Flash",
+        tipo: "Série",
+        genero: "Ação",
+        ano: 2014,
+        imagem: "https://image.tmdb.org/t/p/w500/lJA2RCMfsWoskqlQhXPSLFQGXEJ.jpg",
+        descricao: "Um herói veloz protege sua cidade."
+    },
+    {
+        titulo: "Lilo & Stitch",
+        tipo: "Filme",
+        genero: "Aventura",
+        ano: 2002,
+        imagem: "https://image.tmdb.org/t/p/w500/d73UqZWyw3MUMpeaFcENgLZ2kWS.jpg",
+        descricao: "Uma menina havaiana faz amizade com uma criatura diferente."
+    },
+    {
+        titulo: "Harry Potter e a Pedra Filosofal",
+        tipo: "Filme",
+        genero: "Aventura",
+        ano: 2001,
+        imagem: "https://image.tmdb.org/t/p/w500/wuMc08IPKEatf9rnMNXvIDxqP4W.jpg",
+        descricao: "Harry descobre que é bruxo e começa a estudar em Hogwarts."
+    },
+    {
+        titulo: "Homem-Aranha: Sem Volta para Casa",
+        tipo: "Filme",
+        genero: "Ação",
+        ano: 2021,
+        imagem: "https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg",
+        descricao: "Peter Parker enfrenta consequências inesperadas de sua identidade revelada."
+    },
+    {
+        titulo: "Barbie",
+        tipo: "Filme",
+        genero: "Comédia",
+        ano: 2023,
+        imagem: "https://image.tmdb.org/t/p/w500/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg",
+        descricao: "Barbie sai de seu mundo e vive uma aventura no mundo real."
+    },
+    {
+        titulo: "O Rei Leão",
+        tipo: "Filme",
+        genero: "Animação",
+        ano: 1994,
+        imagem: "https://image.tmdb.org/t/p/w500/sKCr78MXSLixwmZ8DyJLrpMsd15.jpg",
+        descricao: "Simba aprende sobre coragem e responsabilidade."
+    },
+    {
+        titulo: "Frozen: Uma Aventura Congelante",
+        tipo: "Filme",
+        genero: "Animação",
+        ano: 2013,
+        imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgJE4Oq-uvP845Jq6ZsVyRwIqGb9PeRmaPD_8C5vcxBQ&s=10",
+        descricao: "Duas irmãs vivem uma aventura em um reino congelado."
+    },
+    {
+        titulo: "Moana",
+        tipo: "Filme",
+        genero: "Aventura",
+        ano: 2016,
+        imagem: "https://image.tmdb.org/t/p/w500/4JeejGugONWpJkbnvL12hVoYEDa.jpg",
+        descricao: "Moana atravessa o oceano para ajudar seu povo."
+    },
+    {
+        titulo: "Encanto",
+        tipo: "Filme",
+        genero: "Animação",
+        ano: 2021,
+        imagem: "https://image.tmdb.org/t/p/w500/4j0PNHkMr5ax3IA8tjtxcmPU3QT.jpg",
+        descricao: "Uma família mágica descobre a importância de cada pessoa."
+    },
+    {
+        titulo: "Elementos",
+        tipo: "Filme",
+        genero: "Animação",
+        ano: 2023,
+        imagem: "https://image.tmdb.org/t/p/w500/6oH378KUfCEitzJkm07r97L0RsZ.jpg",
+        descricao: "Dois jovens de elementos diferentes descobrem suas semelhanças."
+    },
+    {
+        titulo: "Gato de Botas 2: O Último Pedido",
+        tipo: "Filme",
+        genero: "Aventura",
+        ano: 2022,
+        imagem: "https://image.tmdb.org/t/p/w500/kuf6dutpsT0vSVehic3EZIqkOBt.jpg",
+        descricao: "O Gato de Botas parte em uma aventura em busca de um desejo."
+    },
+    {
+        titulo: "Jumanji: Bem-vindo à Selva",
+        tipo: "Filme",
+        genero: "Aventura",
+        ano: 2017,
+        imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpVHag-lpp6GTsgXwR3tp5VipEdcZv0I4ZOlk2Q5vRDA&s=10",
+        descricao: "Quatro amigos entram em um jogo cheio de desafios."
+    },
+    {
+        titulo: "Jurassic World: O Mundo dos Dinossauros",
+        tipo: "Filme",
+        genero: "Aventura",
+        ano: 2015,
+        imagem: "https://image.tmdb.org/t/p/w500/A0LZHXUzo5C60Oahvt7VxvwuzHw.jpg",
+        descricao: "Um parque de dinossauros enfrenta uma situação inesperada."
+    },
+    {
+        titulo: "Interestelar",
+        tipo: "Filme",
+        genero: "Ficção científica",
+        ano: 2014,
+        imagem: "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
+        descricao: "Uma equipe viaja pelo espaço em busca de um futuro para a humanidade."
+    },
+    {
+        titulo: "Jogos Vorazes",
+        tipo: "Filme",
+        genero: "Ação",
+        ano: 2012,
+        imagem: "https://image.tmdb.org/t/p/w500/yXCbOiVDCxO71zI7cuwBRXdftq8.jpg",
+        descricao: "Katniss participa de uma competição que muda sua vida."
+    },
+    {
+        titulo: "Guardiões da Galáxia",
+        tipo: "Filme",
+        genero: "Ficção científica",
+        ano: 2014,
+        imagem: "https://image.tmdb.org/t/p/w500/r7vmZjiyZw9rpJMQJdXpjgiCOk9.jpg",
+        descricao: "Um grupo improvável se une para proteger a galáxia."
+    },
+    {
+        titulo: "Através da Minha Janela",
+        tipo: "Filme",
+        genero: "Romance",
+        ano: 2022,
+        imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRU5i1EnJAgGmdTVvaVSNRKVEPCQhn-B2JTRLUXrIPWDQ&s=10",
+        descricao: "Uma jovem começa a se aproximar de seu vizinho."
+    },
+    {
+        titulo: "Continência ao Amor",
+        tipo: "Filme",
+        genero: "Romance",
+        ano: 2022,
+        imagem: "https://image.tmdb.org/t/p/w500/4JyNWkryifWbWXJyxcWh3pVya6N.jpg",
+        descricao: "Duas pessoas fazem um acordo que acaba mudando seus sentimentos."
+    },
+    {
+        titulo: "O Diário da Princesa",
+        tipo: "Filme",
+        genero: "Comédia",
+        ano: 2001,
+        imagem: "https://image.tmdb.org/t/p/w500/qSw4lzhDGeM5MjQc86BLzJALhBs.jpg",
+        descricao: "Uma adolescente descobre que é herdeira de um reino."
+    },
+    {
+        titulo: "De Repente 30",
+        tipo: "Filme",
+        genero: "Comédia",
+        ano: 2004,
+        imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkF4xCvfhfeQ_0413NfR8q584u2FdE-fuFg03KyMUrpg&s=10",
+        descricao: "Uma adolescente acorda adulta e precisa entender sua nova vida."
+    },
+    {
+        titulo: "Procurando Nemo",
+        tipo: "Filme",
+        genero: "Animação",
+        ano: 2003,
+        imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAdo661AIXiT7FUyJolXYMnHuufOPZ2J8kWDqW7M6B1A&s=10",
+        descricao: "Um peixe-palhaço atravessa o oceano para encontrar seu filho."
+    },
+    {
+        titulo: "Monstros S.A.",
+        tipo: "Filme",
+        genero: "Animação",
+        ano: 2001,
+        imagem: "https://m.media-amazon.com/images/M/MV5BZjEzYTA5N2EtN2Y1MC00MzBmLWJjZmYtOWQyMjc5MDJiYjIwXkEyXkFqcGc@._V1_.jpg",
+        descricao: "Dois monstros trabalham em uma fábrica de sustos."
+    },
+    {
+        titulo: "Matilda",
+        tipo: "Filme",
+        genero: "Comédia",
+        ano: 1996,
+        imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOxC_WB-pspHRg92xPILXghzsEP6dCLPSFJM50tuLUwQ&s=10",
+        descricao: "Uma menina muito inteligente descobre que possui habilidades especiais."
+    },
+    {
+        titulo: "Wandinha",
+        tipo: "Série",
+        genero: "Suspense",
+        ano: 2022,
+        imagem: "https://image.tmdb.org/t/p/w500/9PFonBhy4cQy7Jz20NpMygczOkv.jpg",
+        descricao: "Wandinha investiga mistérios durante seus estudos na Escola Nunca Mais."
+    },
+    {
+        titulo: "The Mandalorian",
+        tipo: "Série",
+        genero: "Aventura",
+        ano: 2019,
+        imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRg64PE6obF5dv2rEDbIChrQ-B5gt9LY2r7aLi5-21qiw&s=10",
+        descricao: "Um caçador de recompensas percorre a galáxia em novas aventuras."
+    },
+    {
+        titulo: "Loki",
+        tipo: "Série",
+        genero: "Ficção científica",
+        ano: 2021,
+        imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSa6oU0fgn6EWpv9fBf3D_G7BIb7gGylKFG-Cns0JIHgQ&s=10",
+        descricao: "Loki se envolve com uma organização que acompanha as linhas do tempo."
+    },
+    {
+        titulo: "WandaVision",
+        tipo: "Série",
+        genero: "Ficção científica",
+        ano: 2021,
+        imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOVHgdOpvzZluzaYjYsizVX4eeEFYiZyx8NpRXwCrYaQ&s=10",
+        descricao: "Wanda e Visão vivem uma realidade cheia de perguntas."
+    },
+    {
+        titulo: "The Good Doctor",
+        tipo: "Série",
+        genero: "Drama",
+        ano: 2017,
+        imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsN7LThEM0YD84vctH7U2AbrQA4o5XemoP5CEDfSytCQ&s=10",
+        descricao: "Um jovem médico começa a trabalhar em um hospital e enfrenta desafios."
+    },
+    {
+        titulo: "Grey's Anatomy",
+        tipo: "Série",
+        genero: "Drama",
+        ano: 2005,
+        imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCMsIhtDjHb6SWZhKQX_ipShJqLy0I-ykEQVDiHLyX4Q&s=10",
+        descricao: "Médicos lidam com desafios no hospital e em suas vidas pessoais."
+    },
+    {
+        titulo: "Cobra Kai",
+        tipo: "Série",
+        genero: "Ação",
+        ano: 2018,
+        imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzI72lbtUfXNS7AeZwlx3ly1c1lHR4paO9ISZOZVfAQA&s=10",
+        descricao: "Antigos rivais voltam ao mundo do karatê e treinam novos alunos."
+    },
+    {
+        titulo: "Heartstopper",
+        tipo: "Série",
+        genero: "Romance",
+        ano: 2022,
+        imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQII_Ay5Kb_LEitM7WMXRhWUc56dIi1fOdUajwtvnqN8w&s=10",
+        descricao: "Dois estudantes descobrem o valor da amizade e dos sentimentos."
+    },
+    {
+        titulo: "Eu Nunca...",
+        tipo: "Série",
+        genero: "Comédia",
+        ano: 2020,
+        imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLg4MPx3z5fcYn02AEfyW3As4KWR3nt466NmznM0lddA&s=10",
+        descricao: "Uma adolescente tenta equilibrar escola, família e amizades."
+    },
+    {
+        titulo: "The Umbrella Academy",
+        tipo: "Série",
+        genero: "Ficção científica",
+        ano: 2019,
+        imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQA9ecPzm5Ra_3aDXr3hHeWD9OlBF5DXIBa5IcNkmT1Ag&s=10",
+        descricao: "Irmãos com habilidades especiais tentam impedir grandes acontecimentos."
+    },
+    {
+        titulo: "Manifest",
+        tipo: "Série",
+        genero: "Suspense",
+        ano: 2018,
+        imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1LHUiAk4Wq4SOhKSAkJ79Yg2HqOTTl189phAb7McjtA&s=10",
+        descricao: "Passageiros de um avião retornam e descobrem que muitos anos se passaram."
+    },
+    {
+        titulo: "Lupin",
+        tipo: "Série",
+        genero: "Suspense",
+        ano: 2021,
+        imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUr9gzzHMJqv56dly7ACralo7DpwqaMzGqnQLx4G2UFA&s=10",
+        descricao: "Assane usa inteligência e disfarces para resolver um mistério familiar."
+    },
+    {
+        titulo: "One Piece",
+        tipo: "Série",
+        genero: "Aventura",
+        ano: 2023,
+        imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTw_yzXcaWeBZN5ELbOsgpvEvkvaJ6l_x6XxW2Xi4TXXg&s=10",
+        descricao: "Luffy reúne uma tripulação e parte em busca de um grande tesouro."
+    },
+    {
+        titulo: "Percy Jackson e os Olimpianos",
+        tipo: "Série",
+        genero: "Aventura",
+        ano: 2023,
+        imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAN4rHxygMPREuoChyDg7X6adhshx63HwJXH5jspJucQ&s=10",
+        descricao: "Percy descobre sua origem e parte em uma missão ligada à mitologia grega."
+    },
+    {
+        titulo: "A Casa do Dragão",
+        tipo: "Série",
+        genero: "Drama",
+        ano: 2022,
+        imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2AeYuQOwIt7zrmRuOHwhXXmoADy7KjxoTdUqJqvzAfw&s=10",
+        descricao: "A família Targaryen enfrenta disputas pelo poder em Westeros."
+    },
+    {
+        titulo: "Anne with an E",
+        tipo: "Série",
+        genero: "Drama",
+        ano: 2017,
+        imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRARhFpQVFPWgNKv9PjkvwphaAY7flEEo56ZX2YCBSEBw&s=10",
+        descricao: "Anne encontra um novo lar e transforma a vida das pessoas ao seu redor."
+    },
+    {
+        titulo: "Atypical",
+        tipo: "Série",
+        genero: "Comédia",
+        ano: 2017,
+        imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTP6UzGeTEqGNXJghEbkjEgSnnj5PKQFCB6NgvtZmriMw&s=10",
+        descricao: "Sam busca mais independência enquanto sua família também muda."
+    },
+    {
+        titulo: "The Big Bang Theory",
+        tipo: "Série",
+        genero: "Comédia",
+        ano: 2007,
+        imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSatn7CVT004JD6pqHarIFreX28zrAARwqTYJa25uH91Q&s=10",
+        descricao: "Um grupo de amigos cientistas vive situações divertidas."
+    },
+    {
+        titulo: "Supergirl",
+        tipo: "Série",
+        genero: "Ação",
+        ano: 2015,
+        imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLUhiAq9LP5jnXH81U0X6Zcz5-enJ0j-X1YT_GXDx2Qg&s=10",
+        descricao: "Kara usa seus poderes para proteger sua cidade."
+    },
+    {
+        titulo: "H2O: Meninas Sereias",
+        tipo: "Série",
+        genero: "Aventura",
+        ano: 2006,
+        imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSoe1ESSz8iCvO6InJWzfXkTNn0CMO6bBdPZJ8ksz8Y3A&s=10",
+        descricao: "Três amigas descobrem que podem se transformar em sereias."
+    },
+    {
+        titulo: "Julie e os Fantasmas",
+        tipo: "Série",
+        genero: "Comédia",
+        ano: 2020,
+        imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8N3DUUm0CyCV2OftdJzQzjgwQoSbt6Ia2Zgy6ayaRzg&s=10",
+        descricao: "Uma jovem encontra inspiração musical ao conhecer três fantasmas."
+    },
+    {
+        titulo: "As Five",
+        tipo: "Série",
+        genero: "Drama",
+        ano: 2020,
+        imagem: "https://m.media-amazon.com/images/M/MV5BNGFlOTgwMGEtMzc4Yy00NzMxLTg4ZDgtYzBhOWMyMzliYjQwXkEyXkFqcGc@._V1_.jpg",
+        descricao: "Amigas se reencontram e enfrentam novos momentos da vida adulta."
+    },
+    {
+        titulo: "Detetives do Prédio Azul",
+        tipo: "Série",
+        genero: "Aventura",
+        ano: 2012,
+        imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvTTOGc7rV9Wsv_J4RnUzuarlbUqGYi8ecEfpkqaEvbQ&s=10",
+        descricao: "Três amigos investigam mistérios que acontecem no prédio onde moram."
+    },
+    {
+        titulo: "era do gelo",
+        tipo: "filme",
+        genero: "animacao",
+        ano: 2002,
+        imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSI81OGQpkjPFAh3ZuzOp4H7YPFTDy7JGDEC6rJDuy1Zw&s=10",
+        descricao: "é um filme de animação, comédia e aventura de 2002 sobre um trio improvável de animais pré-históricos que se une para devolver um bebê humano à sua família durante uma grande glaciação."
+    }
+];
+
+// MOSTRAR OS FILMES NA TELA
+
+function mostrarFilmes(lista) {
+
+    const container = document.getElementById("listaFilmes");
+    container.innerHTML = "";
+
+    lista.forEach(function(filme) {
+
+        const card = document.createElement("div");
+        card.className = "card";
+
+        const poster = document.createElement("div");
+        poster.className = "poster";
+
+        if (filme.imagem) {
+            const imagem = document.createElement("img");
+            imagem.src = filme.imagem;
+            imagem.alt = filme.titulo;
+
+            imagem.onerror = function() {
+                imagem.remove();
+                poster.textContent = filme.titulo;
+            };
+
+            poster.appendChild(imagem);
+        } else {
+            poster.textContent = filme.titulo;
+        }
+
+        const info = document.createElement("div");
+        info.className = "info";
+
+        const titulo = document.createElement("h3");
+        titulo.textContent = filme.titulo;
+
+        const tipo = document.createElement("p");
+        tipo.textContent = filme.tipo;
+
+        const genero = document.createElement("p");
+        genero.textContent = filme.genero + " - " + filme.ano;
+
+        info.appendChild(titulo);
+        info.appendChild(tipo);
+        info.appendChild(genero);
+
+        card.appendChild(poster);
+        card.appendChild(info);
+
+        card.onclick = function() {
+            abrirDetalhes(filme);
+        };
+
+        container.appendChild(card);
+
+    });
+
+    document.getElementById("mensagem").style.display =
+        lista.length === 0 ? "block" : "none";
+}
+
+// PESQUISA E FILTROS
+
+function filtrar() {
+
+    const pesquisa = document.getElementById("pesquisa").value.toLowerCase();
+    const tipo = document.getElementById("tipo").value;
+    const genero = document.getElementById("genero").value;
+
+    const resultado = filmes.filter(function(filme) {
+
+        return filme.titulo.toLowerCase().includes(pesquisa)
+            && (tipo === "" || filme.tipo === tipo)
+            && (genero === "" || filme.genero === genero);
+
+    });
+
+    mostrarFilmes(resultado);
+}
+
+// ABRIR DETALHES
+
+function abrirDetalhes(filme) {
+
+    document.getElementById("tituloDetalhe").textContent = filme.titulo;
+    document.getElementById("tipoDetalhe").textContent = "Tipo: " + filme.tipo;
+    document.getElementById("generoDetalhe").textContent = "Gênero: " + filme.genero;
+    document.getElementById("anoDetalhe").textContent = "Ano: " + filme.ano;
+    document.getElementById("descricaoDetalhe").textContent = filme.descricao;
+
+    const imagem = document.getElementById("imagemDetalhe");
+
+    if (filme.imagem) {
+        imagem.src = filme.imagem;
+        imagem.style.display = "inline-block";
+        imagem.onerror = function() {
+            imagem.style.display = "none";
+        };
+    } else {
+        imagem.removeAttribute("src");
+        imagem.style.display = "none";
+    }
+
+    abrir("detalhes");
+}
+
+// ADICIONAR FILME OU SÉRIE AO CATÁLOGO
+
+function adicionarFilme() {
+    const titulo = document.getElementById("novoTitulo").value.trim();
+    const tipo = document.getElementById("novoTipo").value;
+    const genero = document.getElementById("novoGenero").value;
+    const ano = document.getElementById("novoAno").value;
+    const imagem = document.getElementById("novaImagem").value.trim();
+    const descricao = document.getElementById("novaDescricao").value.trim();
+    const mensagem = document.getElementById("mensagemAdicionar");
+
+    if (titulo === "" || ano === "") {
+        mensagem.textContent = "Preencha o nome e o ano.";
+        return;
+    }
+
+    const novoItem = {
+        titulo: titulo,
+        tipo: tipo,
+        genero: genero,
+        ano: Number(ano),
+        imagem: imagem,
+        descricao: descricao || "Sem descrição."
+    };
+
+    filmes.push(novoItem);
+
+    // Guarda os itens adicionados neste navegador.
+    const adicionados = JSON.parse(localStorage.getItem("cineflixAdicionados") || "[]");
+    adicionados.push(novoItem);
+    localStorage.setItem("cineflixAdicionados", JSON.stringify(adicionados));
+
+    document.getElementById("novoTitulo").value = "";
+    document.getElementById("novoAno").value = "";
+    document.getElementById("novaImagem").value = "";
+    document.getElementById("novaDescricao").value = "";
+    mensagem.textContent = "Adicionado com sucesso!";
+
+    filtrar();
+
+    setTimeout(function() {
+        fechar("adicionar");
+        mensagem.textContent = "";
+    }, 700);
+}
+
+// Recupera os títulos adicionados anteriormente neste navegador.
+
+try {
+    const salvos = JSON.parse(localStorage.getItem("cineflixAdicionados") || "[]");
+
+    salvos.forEach(function(item) {
+        if (!filmes.some(function(f) {
+            return f.titulo === item.titulo && f.ano === item.ano && f.tipo === item.tipo;
+        })) {
+            filmes.push(item);
+        }
+    });
+} catch (erro) {
+    console.log("Não foi possível carregar os títulos salvos.", erro);
+}
+
+// ABRIR E FECHAR JANELAS
+
+function abrir(id) {
+    document.getElementById(id).style.display = "flex";
+}
+
+function fechar(id) {
+    document.getElementById(id).style.display = "none";
+}
+
+// LOGIN DEMONSTRATIVO
+
+function fazerLogin() {
+
+    const email = document.getElementById("email").value;
+    const senha = document.getElementById("senha").value;
+    const mensagem = document.getElementById("mensagemLogin");
+
+    if (email === "" || senha === "") {
+        mensagem.textContent = "Preencha todos os campos.";
+    } else {
+        mensagem.textContent = "Login demonstrativo realizado!";
+    }
+}
+
+// FECHAR AO CLICAR FORA DA JANELA
+
+window.onclick = function(event) {
+
+    if (event.target.classList.contains("modal")) {
+        event.target.style.display = "none";
+    }
+
+};
+
+// MOSTRAR TODOS OS TÍTULOS AO ABRIR O SITE
+
+mostrarFilmes(filmes);
+
+</script>
+
+</body>
+</html>
